@@ -61,8 +61,30 @@ public class MainActivity extends Activity implements OnItemClickListener, OnDis
                 this, AlertView.Style.Alert, this).show();
     }
 
+    int pos = 100000;
     public void alertShow4(View view) {
-        new AlertView("标题", null, "取消", new String[]{"高亮按钮1"}, new String[]{"其他按钮1", "其他按钮2", "其他按钮3"}, this, AlertView.Style.ActionSheet, this).show();
+
+        mAlertView = new AlertView("标题", null, "取消", new String[]{"高亮按钮1"}, new String[]{"其他按钮1", "其他按钮2", "其他按钮3"}, this, AlertView.Style.ActionSheet, new OnItemClickListener() {
+            @Override
+            public void onItemClick(Object o, int position) {
+                Toast.makeText(MainActivity.this, "点了ok  "+position, Toast.LENGTH_SHORT).show();
+                pos = position;
+
+            }
+        });
+        mAlertView.setOnDismissListener(new OnDismissListener() {
+            @Override
+            public void onDismiss(Object o) {
+                mAlertView = new AlertView("标题", "内容", null, new String[]{"确定","确定2"}, null, MainActivity.this, AlertView.Style.Alert, new OnItemClickListener() {
+                    @Override
+                    public void onItemClick(Object o, int position) {
+                        Toast.makeText(MainActivity.this, "又点了ok  "+position+"  拿到pos:"+pos, Toast.LENGTH_SHORT).show();
+                    }
+                });
+                mAlertView.show();
+            }
+        });
+        mAlertView.show();
     }
 
     public void alertShow5(View view) {
